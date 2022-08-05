@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import * as fetchApi from '../../api/fetch';
-import styles from './Movies.module.css';
 
 export default function Movies() {
   const [movieName, setMovieName] = useState('');

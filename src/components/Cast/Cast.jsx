@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useSearchParams } from 'react';
 import { useParams } from 'react-router-dom';
-import styles from './Cast.module.css';
 import * as fetchApi from '../../api/fetch';
 
 export default function Cast() {
