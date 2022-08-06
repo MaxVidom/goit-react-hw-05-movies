@@ -5,13 +5,16 @@ import * as fetchApi from '../../api/fetch';
 export default function Reviews() {
   const [reviews, setReviews] = useState([]);
   const { movieId } = useParams();
+  const [error, setError] = useState(null);
   useEffect(() => {
     fetchApi
       .fetchMovieReviews(movieId)
-      .then(filmCasts => setReviews(filmCasts.results));
+      .then(filmCasts => setReviews(filmCasts.results))
+      .catch(error => setError(error.message));
   }, [movieId]);
   return (
     <ul>
+      {error && <h2>{error.message}</h2>}
       {reviews.length !== 0 ? (
         reviews.map(({ author, content, id }) => {
           return (

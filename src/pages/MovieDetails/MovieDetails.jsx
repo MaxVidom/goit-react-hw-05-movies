@@ -8,16 +8,19 @@ export default function MovieDetails({ id }) {
   const location = useLocation();
   const backPage = location.state.from ?? '/';
   const backFrom = useRef(backPage);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchApi
       .fetchMovieDetails(movieId)
-      .then(movieDetail => setMovie(movieDetail));
+      .then(movieDetail => setMovie(movieDetail))
+      .catch(error => setError(error.message));
   }, [movieId]);
   const { poster_path, original_title, overview, genres, vote_average } = movie;
 
   return (
     <div>
+      {error && <h2>{error.message}</h2>}
       <Link to={backPage}>Back</Link>
       <div>
         {poster_path && (

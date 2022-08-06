@@ -5,13 +5,16 @@ import * as fetchApi from '../../api/fetch';
 export default function Cast() {
   const [casts, setCasts] = useState([]);
   const { movieId } = useParams();
+  const [error, setError] = useState(null);
   useEffect(() => {
     fetchApi
       .fetchMovieCasts(movieId)
-      .then(filmCasts => setCasts(filmCasts.cast));
+      .then(filmCasts => setCasts(filmCasts.cast))
+      .catch(error => setError(error.message));
   }, [movieId]);
   return (
     <ul>
+      {error && <h2>{error.message}</h2>}
       {casts &&
         casts.map(({ profile_path, character, original_name, id }) => {
           return (

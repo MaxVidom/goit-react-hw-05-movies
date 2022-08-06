@@ -6,8 +6,10 @@ export default function Movies() {
   const [movieName, setMovieName] = useState('');
   const [moviesList, setMoviesList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [error, setError] = useState(null);
+  const [inputName, setInputName] = useState('');
   const location = useLocation();
-  const searchName = searchParams.get('name') ?? '';
+  // const searchName = searchParams.get('name') ?? '';
   useEffect(() => {
     if (!movieName) {
       console.log('Noname');
@@ -15,28 +17,36 @@ export default function Movies() {
     }
     fetchApi
       .fetchMovie(movieName)
-      .then(movies => setMoviesList(movies.results));
+      .then(movies => setMoviesList(movies.results))
+      .catch(error => setError(error.message));
   }, [movieName]);
 
+  useEffect(() => {
+    setInputName(searchParams.get('name') ?? '');
+    setMovieName(searchParams.get('name') ?? '');
+  }, [searchParams]);
   const handleInputChange = evt => {
-    const name = evt.currentTarget.value;
-    const nextParams = name !== '' ? { name } : {};
-    setSearchParams(nextParams);
+    setInputName(evt.currentTarget.value);
   };
 
   const handleOnSubmit = evt => {
     evt.preventDefault();
-    setMovieName(searchName);
+    const name = inputName;
+    const nextParams = name !== '' ? { name } : {};
+    setMovieName(inputName);
+
+    setSearchParams(nextParams);
   };
 
   return (
     <div>
       <form>
-        <input type="text" value={searchName} onChange={handleInputChange} />
+        <input type="text" value={inputName} onChange={handleInputChange} />
         <button type="submit" onClick={handleOnSubmit}>
           Search
         </button>
       </form>
+      {error && <h2>{error.message}</h2>}
       {moviesList.map(({ original_title, id }) => {
         return (
           <div key={id}>
