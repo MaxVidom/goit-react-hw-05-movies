@@ -6,10 +6,10 @@ export default function MovieDetails({ id }) {
   const [movie, setMovie] = useState({});
   const { movieId } = useParams();
   const location = useLocation();
-  const backPage = location.state.from ?? '/';
+  const backPage = location.state?.from ?? '/';
   const backFrom = useRef(backPage);
   const [error, setError] = useState(null);
-
+  console.log(location.state?.from);
   useEffect(() => {
     fetchApi
       .fetchMovieDetails(movieId)
